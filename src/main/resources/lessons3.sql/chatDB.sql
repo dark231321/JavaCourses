@@ -24,5 +24,11 @@ create table chat.message(
     primary key (id)
 );
 
-select * from chat.message;
-commit ;
+select
+    m.time, u.login _FROM, u1.login _TO, m.value
+from chat.message as m
+    JOIN chat.user u on u.id = m."userFrom"
+    JOIN chat.user u1 on u1.id = m."userTo"
+ORDER BY m.time;
+
+commit;

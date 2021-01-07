@@ -10,6 +10,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 
@@ -21,19 +22,22 @@ public class UserDao implements Dao<User> {
 
     private static Logger log = LoggerFactory.getLogger(UserDao.class);
 
-    private static final String getAllUsers
+    private static final String GET_ALL_USER
             = "select * FROM chat.user";
 
     private static final String INSERT_USER_TEMPLATE =
             "insert into chat.user (login) " +
                     "values ('%s');";
 
+    private static final String GET_ALL_WHERE
+            = "SELECT * FROM chat.user WHERE ";
+
     @Override
     public List<User> getAll() {
         List<User> userList = new ArrayList<>();
         try(Connection connection = DBConnector.connection();
             Statement statement = connection.createStatement()){
-            ResultSet rs = statement.executeQuery(getAllUsers);
+            ResultSet rs = statement.executeQuery(GET_ALL_USER);
             while (rs.next()){
                 userList.add(mapToUser(rs));
             }
@@ -45,7 +49,17 @@ public class UserDao implements Dao<User> {
 
     @Override
     public List<User> getAllWhere(String... conditions) {
-        return null;
+        List<User> users = new ArrayList<>();
+        try(Connection connection = DBConnector.connection();
+            Statement stm = connection.createStatement()) {
+            ResultSet rs = stm.executeQuery(GET_ALL_WHERE + String.join(" and ", conditions));
+            while (rs.next()){
+                users.add(mapToUser(rs));
+            }
+        } catch (SQLException exp) {
+            log.error("Failed to get user with this conditions{}", Arrays.toString(conditions), exp);
+        }
+        return users;
     }
 
     @Override

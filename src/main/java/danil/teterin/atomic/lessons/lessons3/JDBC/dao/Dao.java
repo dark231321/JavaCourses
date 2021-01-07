@@ -23,7 +23,7 @@ public interface Dao<T> {
      * SELECT * from ... WHERE id=
      * @return Optional.empty() if nothing found
      * */
-    default Optional<T> findById(int id){
+    default Optional<T> findById(long id) {
         return Optional.ofNullable(
                 getAllWhere("id=" + id).get(0)
         );

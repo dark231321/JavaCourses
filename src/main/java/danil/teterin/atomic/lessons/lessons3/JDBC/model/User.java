@@ -17,4 +17,11 @@ public class User extends Entity<Long> {
 
     public User setLogin(String login) { this.login = login; return this; }
 
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + getKey() +
+                " login='" + login + '\'' +
+                '}';
+    }
 }
