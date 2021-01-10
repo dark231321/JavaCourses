@@ -64,7 +64,7 @@ public class ChatController {
         userDao.insert(user);
     }
 
-    @RequestMapping(path = "/search",
+        @RequestMapping(path = "/search",
                     method = RequestMethod.GET)
     public ResponseEntity<?> getByName(@RequestParam("login") String login) {
         List<User> users = userDao.getAllWhere("chat.user.login= '" + login + "'");

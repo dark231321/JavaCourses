@@ -87,4 +87,5 @@ public class MessageDao implements Dao<Message> {
                         .setLogin(rs.getString("_LoginTo"))
                         .setKey(rs.getLong("_IdTo")));
     }
+
 }
